@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
 import CoinCard from "./components/CoinCard.jsx";
 import LimitSelector from "./components/LimitSelector.jsx";
 import FilterInput from "./components/FilterInput.jsx";
@@ -69,64 +68,97 @@ const App = () => {
 
     const totalMarketCap = coins.reduce((sum, coin) => sum + coin.market_cap, 0);
     const totalVolume = coins.reduce((sum, coin) => sum + coin.total_volume, 0);
-    const avgChange = coins.reduce((sum, coin) => sum + coin.price_change_percentage_24h, 0) / coins.length;
+    const avgChange = coins.length > 0 ? coins.reduce((sum, coin) => sum + coin.price_change_percentage_24h, 0) / coins.length : 0;
 
     return (
-        <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5 }}
-            className="app-container"
-        >
+        <div className="app-container">
             <header className="app-header">
-                <motion.div
-                    initial={{ y: -50, opacity: 0 }}
-                    animate={{ y: 0, opacity: 1 }}
-                    transition={{ delay: 0.2 }}
-                    className="header-content"
-                >
-                    <div className="header-main">
+                <div className="header-content">
+                    <div className="header-top">
                         <div className="logo-container">
-                            <motion.div
-                                className="logo"
-                                animate={{ rotate: [0, 360] }}
-                                transition={{ repeat: Infinity, duration: 20, ease: "linear" }}
-                            >
+                            <div className="logo">
                                 <svg width="40" height="40" viewBox="0 0 40 40">
-                                    <circle cx="20" cy="20" r="18" fill="none" stroke="url(#gradient)" strokeWidth="2"/>
-                                    <path d="M20 2 L20 38 M2 20 L38 20" stroke="url(#gradient)" strokeWidth="1"/>
-                                    <circle cx="20" cy="20" r="8" fill="none" stroke="url(#gradient)" strokeWidth="2"/>
-                                    <defs>
-                                        <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                                            <stop offset="0%" stopColor="#667eea" />
-                                            <stop offset="100%" stopColor="#764ba2" />
-                                        </linearGradient>
-                                    </defs>
+                                    <circle cx="20" cy="20" r="18" fill="none" stroke="#667eea" strokeWidth="2"/>
+                                    <path d="M20 2 L20 38 M2 20 L38 20" stroke="#667eea" strokeWidth="1"/>
+                                    <circle cx="20" cy="20" r="8" fill="none" stroke="#667eea" strokeWidth="2"/>
                                 </svg>
-                            </motion.div>
-                            <div>
+                            </div>
+                            <div className="logo-text">
                                 <h1 className="app-title">Crypto<span className="gradient-text">Dash</span></h1>
                                 <p className="app-subtitle">Real-time cryptocurrency insights</p>
                             </div>
                         </div>
 
-                        <StatsPanel
-                            totalCoins={coins.length}
-                            totalMarketCap={totalMarketCap}
-                            totalVolume={totalVolume}
-                            avgChange={avgChange}
-                        />
+                        <div className="header-actions">
+                            <button className="header-btn watchlist-btn">
+                                📋 Watchlist
+                            </button>
+                            <button
+                                className="header-btn refresh-btn"
+                                onClick={() => window.location.reload()}
+                            >
+                                🔄 Refresh
+                            </button>
+                        </div>
                     </div>
-                </motion.div>
+
+                    <div className="header-stats">
+                        <div className="market-overview">
+                            <div className="overview-title">
+                                <span>📊</span>
+                                <h3>Market Overview</h3>
+                            </div>
+
+                            <div className="overview-stats">
+                                <div className="overview-stat">
+                                    <span className="stat-label">Total Cryptos</span>
+                                    <span className="stat-value">14,205</span>
+                                </div>
+                                <div className="overview-stat">
+                                    <span className="stat-label">24h Volume</span>
+                                    <span className="stat-value">$89.2B</span>
+                                </div>
+                                <div className="overview-stat">
+                                    <span className="stat-label">BTC Dominance</span>
+                                    <span className="stat-value">52.8%</span>
+                                </div>
+                                <div className="overview-stat">
+                                    <span className="stat-label">Market Status</span>
+                                    <span className="stat-value positive">Greed</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="trending-coins">
+                            <div className="trending-title">
+                                <span>🚀</span>
+                                <h3>Trending Now</h3>
+                            </div>
+                            <div className="trending-list">
+                                {coins.slice(0, 3).map((coin) => (
+                                    <div key={coin.id} className="trending-coin">
+                                        <img src={coin.image} alt={coin.name} width={20} height={20} />
+                                        <span className="trending-name">{coin.symbol.toUpperCase()}</span>
+                                        <span className={`trending-change ${coin.price_change_percentage_24h >= 0 ? 'positive' : 'negative'}`}>
+                                            {coin.price_change_percentage_24h >= 0 ? '+' : ''}{coin.price_change_percentage_24h.toFixed(1)}%
+                                        </span>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+
+                    <StatsPanel
+                        totalCoins={coins.length}
+                        totalMarketCap={totalMarketCap}
+                        totalVolume={totalVolume}
+                        avgChange={avgChange}
+                    />
+                </div>
             </header>
 
             <main className="main-content">
-                <motion.div
-                    initial={{ y: 20, opacity: 0 }}
-                    animate={{ y: 0, opacity: 1 }}
-                    transition={{ delay: 0.3 }}
-                    className="controls-section"
-                >
+                <div className="controls-section">
                     <div className="controls-grid">
                         <FilterInput filter={filter} onFilterChange={setFilter} />
                         <div className="secondary-controls">
@@ -134,23 +166,15 @@ const App = () => {
                             <LimitSelector limit={limit} onLimitChange={setLimit} />
                         </div>
                     </div>
-                </motion.div>
+                </div>
 
                 {loading ? (
-                    <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        className="loading-container"
-                    >
+                    <div className="loading-container">
                         <div className="spinner"></div>
                         <p className="loading-text">Fetching market data...</p>
-                    </motion.div>
+                    </div>
                 ) : error ? (
-                    <motion.div
-                        initial={{ opacity: 0, scale: 0.9 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        className="error-container"
-                    >
+                    <div className="error-container">
                         <div className="error-icon">⚠️</div>
                         <h3>Unable to Load Data</h3>
                         <p>{error}</p>
@@ -160,58 +184,30 @@ const App = () => {
                         >
                             Retry Connection
                         </button>
-                    </motion.div>
+                    </div>
                 ) : (
-                    <AnimatePresence mode="wait">
-                        <motion.div
-                            key={filteredCoins.length}
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            exit={{ opacity: 0 }}
-                            transition={{ duration: 0.3 }}
-                        >
-                            {filteredCoins.length > 0 ? (
-                                <div className="coins-grid">
-                                    <AnimatePresence>
-                                        {filteredCoins.map((coin, index) => (
-                                            <motion.div
-                                                key={coin.id}
-                                                initial={{ opacity: 0, y: 20 }}
-                                                animate={{ opacity: 1, y: 0 }}
-                                                exit={{ opacity: 0, scale: 0.9 }}
-                                                transition={{ delay: index * 0.05 }}
-                                                layout
-                                            >
-                                                <CoinCard coin={coin} />
-                                            </motion.div>
-                                        ))}
-                                    </AnimatePresence>
-                                </div>
-                            ) : (
-                                <motion.div
-                                    initial={{ opacity: 0 }}
-                                    animate={{ opacity: 1 }}
-                                    className="no-results"
-                                >
-                                    <div className="no-results-icon">🔍</div>
-                                    <h3>No Matching Coins Found</h3>
-                                    <p>Try adjusting your search filter</p>
-                                </motion.div>
-                            )}
-                        </motion.div>
-                    </AnimatePresence>
+                    <>
+                        {filteredCoins.length > 0 ? (
+                            <div className="coins-grid">
+                                {filteredCoins.map((coin) => (
+                                    <CoinCard key={coin.id} coin={coin} />
+                                ))}
+                            </div>
+                        ) : (
+                            <div className="no-results">
+                                <div className="no-results-icon">🔍</div>
+                                <h3>No Matching Coins Found</h3>
+                                <p>Try adjusting your search filter</p>
+                            </div>
+                        )}
+                    </>
                 )}
 
-                <motion.footer
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.8 }}
-                    className="app-footer"
-                >
+                <footer className="app-footer">
                     <p>Data updates in real-time • Last refresh: {new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</p>
-                </motion.footer>
+                </footer>
             </main>
-        </motion.div>
+        </div>
     );
 };
 

@@ -1,18 +1,15 @@
 import React from 'react';
-import { motion } from 'framer-motion';
-import { ChevronDown } from 'lucide-react';
 
 const LimitSelector = ({ limit, onLimitChange }) => {
+    const options = [5, 10, 20, 50, 100];
+
     return (
-        <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="limit-selector-wrapper"
-        >
+        <div className="limit-selector-wrapper">
             <div className="select-container">
-                <label htmlFor="limit" className="select-label">
-                    Show
-                </label>
+                <div className="select-label">
+                    <span>📋</span>
+                    <span>Show</span>
+                </div>
                 <div className="select-wrapper">
                     <select
                         id="limit"
@@ -20,16 +17,16 @@ const LimitSelector = ({ limit, onLimitChange }) => {
                         onChange={(e) => onLimitChange(Number(e.target.value))}
                         className="limit-select"
                     >
-                        <option value={5}>5 coins</option>
-                        <option value={10}>10 coins</option>
-                        <option value={20}>20 coins</option>
-                        <option value={50}>50 coins</option>
-                        <option value={100}>100 coins</option>
+                        {options.map(option => (
+                            <option key={option} value={option}>
+                                {option} coins
+                            </option>
+                        ))}
                     </select>
-                    <ChevronDown size={16} className="select-arrow" />
+                    <span className="select-arrow">▼</span>
                 </div>
             </div>
-        </motion.div>
+        </div>
     );
 };
 

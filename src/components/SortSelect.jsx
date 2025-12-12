@@ -1,16 +1,22 @@
 import React from 'react';
-import { motion } from 'framer-motion';
-import { Filter } from 'lucide-react';
 
 const SortSelect = ({ sortBy, onSortChange }) => {
+    const sortOptions = [
+        { value: 'market_cap_desc', label: 'Market Cap (High → Low)' },
+        { value: 'market_cap_asc', label: 'Market Cap (Low → High)' },
+        { value: 'price_desc', label: 'Price (High → Low)' },
+        { value: 'price_asc', label: 'Price (Low → High)' },
+        { value: 'change_desc', label: '24h Change (High → Low)' },
+        { value: 'change_asc', label: '24h Change (Low → High)' }
+    ];
+
     return (
-        <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="sort-selector-wrapper"
-        >
+        <div className="sort-selector-wrapper">
             <div className="select-container">
-                <Filter size={16} className="filter-icon" />
+                <div className="select-label">
+                    <span>🔽</span>
+                    <span>Sort by</span>
+                </div>
                 <div className="select-wrapper">
                     <select
                         id="sort"
@@ -18,16 +24,16 @@ const SortSelect = ({ sortBy, onSortChange }) => {
                         onChange={(e) => onSortChange(e.target.value)}
                         className="sort-select"
                     >
-                        <option value="market_cap_desc">Market Cap (High → Low)</option>
-                        <option value="market_cap_asc">Market Cap (Low → High)</option>
-                        <option value="price_desc">Price (High → Low)</option>
-                        <option value="price_asc">Price (Low → High)</option>
-                        <option value="change_desc">24h Change (High → Low)</option>
-                        <option value="change_asc">24h Change (Low → High)</option>
+                        {sortOptions.map(option => (
+                            <option key={option.value} value={option.value}>
+                                {option.label}
+                            </option>
+                        ))}
                     </select>
+                    <span className="select-arrow">▼</span>
                 </div>
             </div>
-        </motion.div>
+        </div>
     );
 };
 

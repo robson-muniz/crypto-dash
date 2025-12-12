@@ -1,16 +1,10 @@
 import React from 'react';
-import { motion } from 'framer-motion';
-import { Search, X } from 'lucide-react';
 
 const FilterInput = ({ filter, onFilterChange }) => {
     return (
-        <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            className="filter-input-wrapper"
-        >
+        <div className="filter-input-wrapper">
             <div className="filter-input-container">
-                <Search size={20} className="search-icon" />
+                <span className="search-icon">🔍</span>
                 <input
                     type="text"
                     value={filter}
@@ -19,19 +13,25 @@ const FilterInput = ({ filter, onFilterChange }) => {
                     className="filter-input"
                 />
                 {filter && (
-                    <motion.button
-                        initial={{ scale: 0 }}
-                        animate={{ scale: 1 }}
+                    <button
                         onClick={() => onFilterChange('')}
                         className="clear-btn"
-                        whileHover={{ scale: 1.1 }}
-                        whileTap={{ scale: 0.9 }}
+                        style={{
+                            position: 'absolute',
+                            right: '16px',
+                            top: '50%',
+                            transform: 'translateY(-50%)',
+                            background: 'transparent',
+                            border: 'none',
+                            color: '#a0a3c1',
+                            cursor: 'pointer'
+                        }}
                     >
-                        <X size={16} />
-                    </motion.button>
+                        ✕
+                    </button>
                 )}
             </div>
-        </motion.div>
+        </div>
     );
 };
 
