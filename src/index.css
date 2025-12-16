@@ -428,6 +428,13 @@ body {
 }
 
 /* Coin Card */
+/* Add this to your CoinCard CSS file */
+.coin-card-link {
+  text-decoration: none; /* remove underline */
+  color: inherit;        /* inherit text color from the card */
+  display: block;        /* so the whole card is clickable */
+}
+
 .coin-card {
   background: var(--card-bg);
   border-radius: var(--radius);
@@ -435,6 +442,7 @@ body {
   border: 1px solid var(--border-color);
   transition: all 0.3s ease;
 }
+
 
 .card-header {
   display: flex;

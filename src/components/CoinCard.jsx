@@ -1,4 +1,5 @@
 import React from 'react';
+import {Link} from 'react-router-dom';
 
 const CoinCard = ({ coin }) => {
     const isPositive = coin.price_change_percentage_24h >= 0;
@@ -6,6 +7,7 @@ const CoinCard = ({ coin }) => {
     const volumeInMillions = (coin.total_volume / 1e6).toFixed(1);
 
     return (
+        <Link to={`/coin/${coin.id}`} className="coin-card-link">
         <div className="coin-card">
             <div className="card-header">
                 <div className="coin-info">
@@ -57,6 +59,7 @@ const CoinCard = ({ coin }) => {
                 </div>
             </div>
         </div>
+        </Link>
     );
 };
 

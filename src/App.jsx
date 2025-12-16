@@ -4,6 +4,7 @@ import Home from './components/pages/Home.jsx';
 import AboutPage from "./components/pages/About.jsx";
 import Header from "./components/Header.jsx";
 import NotFound from "./components/pages/not-found.jsx";
+import CoinDetailsPage from "./components/pages/coin-details.jsx";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -62,31 +63,31 @@ const App = () => {
     return (
         <>
             <Header />
-        <Routes>
-            <Route
-                path="/"
-                element={
-                    <Home
-                        coins={coins}
-                        filter={filter}
-                        setFilter={setFilter}
-                        limit={limit}
-                        setLimit={setLimit}
-                        sortBy={sortBy}
-                        setSortBy={setSortBy}
-                        loading={loading}
-                        error={error}
-                        totalMarketCap={totalMarketCap}
-                        totalVolume={totalVolume}
-                        avgChange={avgChange}
-                    />
-                }
-            />
-            <Route path="/about" element={<AboutPage />} />
-            <Route path="*" element={<NotFound />} />
-
-        </Routes></>
-
+            <Routes>
+                <Route
+                    path="/"
+                    element={
+                        <Home
+                            coins={coins}
+                            filter={filter}
+                            setFilter={setFilter}
+                            limit={limit}
+                            setLimit={setLimit}
+                            sortBy={sortBy}
+                            setSortBy={setSortBy}
+                            loading={loading}
+                            error={error}
+                            totalMarketCap={totalMarketCap}
+                            totalVolume={totalVolume}
+                            avgChange={avgChange}
+                        />
+                    }
+                />
+                <Route path="/about" element={<AboutPage />} />
+                <Route path="/coin/:id" element={<CoinDetailsPage />} />  {/* <-- fixed here */}
+                <Route path="*" element={<NotFound />} />
+            </Routes>
+        </>
     );
 };
 
